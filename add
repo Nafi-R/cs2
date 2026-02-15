@@ -4,14 +4,16 @@ DIRECTORY="/mnt/games/SteamLibrary"
 CFG_PATH="$DIRECTORY/steamapps/common/Counter-Strike\ Global\ Offensive/game/csgo/cfg"
 CFG_PATH_ESCAPED="${CFG_PATH//\\ / }"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_PATH="$SCRIPT_DIR/configs"
 
-for file in *.cfg; do 
+for file_path in $CONFIG_PATH/*.cfg; do
+	file=$(basename $file_path)
 	if [ -L "$CFG_PATH_ESCAPED/$file" ]; then
 		rm "$CFG_PATH_ESCAPED/$file"
-		ln -s "$SCRIPT_DIR/$file" "$CFG_PATH_ESCAPED/$file" && echo -e "\e[36mRelinked: $file\e[0m" || echo -e "\e[31mFailed to relink: $file\e[0m"
+		ln -s "$CONFIG_PATH/$file" "$CFG_PATH_ESCAPED/$file" && echo -e "\e[36mRelinked: $file\e[0m" || echo -e "\e[31mFailed to relink: $file\e[0m"
 	elif [ -e "$CFG_PATH_ESCAPED/$file" ]; then
 		echo -e "\e[33mSkipped: $file (file already exists)\e[0m"
-	elif ln -s "$SCRIPT_DIR/$file" "$CFG_PATH_ESCAPED/$file" 2>/dev/null; then
+	elif ln -s "$CONFIG_PATH/$file" "$CFG_PATH_ESCAPED/$file" 2>/dev/null; then
 		echo -e "\e[32mLinked: $file -> $CFG_PATH_ESCAPED/$file\e[0m"
 	else
 		echo -e "\e[31mFailed to link: $file\e[0m"
