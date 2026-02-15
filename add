@@ -1,0 +1,9 @@
+#!/bin/bash
+
+DIRECTORY="/mnt/games/SteamLibrary"
+CFG_PATH="$DIRECTORY/steamapps/common/Counter-Strike\ Global\ Offensive/game/csgo/cfg"
+
+ln -s ./nafi_settings.cfg $CFG_PATH/nafi_settings.cfg
+ln -s ./practice.cfg $CFG_PATH/practice.cfg
+
+echo "Linked cs2 config files. Found in $DIRECTORY"
